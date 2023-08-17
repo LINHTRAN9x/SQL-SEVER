@@ -28,3 +28,7 @@ GROUP BY SalesPersonID, YEAR(OrderDate)
 HAVING COUNT(*) > 1
 ORDER BY SalesPersonID, YEAR(OrderDate)
 
+SELECT a.ProductID,Name, ProductNumber,d.ModifiedDate FROM Production.Product AS a
+INNER JOIN Production.ProductDocument AS d ON
+a.ProductID = d.ProductID
+
