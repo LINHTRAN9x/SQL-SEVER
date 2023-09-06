@@ -171,3 +171,117 @@ JOIN BookSold as bs ON c.CustomerID = bs.CustomerID
 JOIn Books as b ON b.BookCode = bs.BookCode
 GROUP BY c.CustomerName
 GO
+
+----------------------------------------PHẦN 3: BT về nhà.
+CREATE DATABASE ClassManagerData
+USE ClassManagerData
+SELECT * FROM Class
+
+CREATE TABLE Class(
+   ClassCode varchar(10) primary key,
+   HeadTeacher varchar(30),
+   Room varchar(30),
+   TimeSlot char,
+   CloseDate datetime
+)
+INSERT INTO Class(ClassCode,HeadTeacher,Room,TimeSlot,CloseDate) VALUES
+        ('C2312','Mr.Wish','12A','G','2023-12-09'),
+		('C2313','PerterJ','12B','I','2023-11-09'),
+		('C2314','LeoNar','11C','L','2023-11-10'),
+		('C2315','Jackson','10B','M','2023-05-12'),
+		('C2316','Raphaeh','12C','M','2023-02-04')
+GO
+
+SELECT * FROM Student
+CREATE TABLE Student(
+   RollNo varchar(10) primary key,
+   ClassCode varchar(10) references Class(ClassCode),
+   FullName varchar(30),
+   Male bit,
+   BirthDate datetime,
+   Address varchar(30),
+   Province char(2),
+   Email varchar(30)
+)
+INSERT INTO Student(RollNo,ClassCode,FullName,Male,BirthDate,Address,Province,Email) VALUES
+         ('A01','C2312','Tintin','1','2000-05-09','ST-19,LonDon','LD','tintin2k@gmail.com'),
+		 ('A02','C2313','TranNguyen','1','2000-09-30','ST-1,LonDon','LD','nguyentran@gmail.com'),
+		 ('A03','C2314','LinhChi','0','2000-11-02','ST-69,LonDon','LD','linhchi@gmail.com'),
+		 ('A04','C2315','PhuongThao','0','2000-11-09','ss-11,LonDon','LD','ThaoPhuong12@gmail.com'),
+		 ('A05','C2316','Mephisto','1','2000-01-15','ST-19,LonDon','LD','linkerina@gmail.com')
+GO
+
+CREATE TABLE Mark(
+   RollNo varchar(10) references Student(RollNo),
+   SubjectCode varchar(10) references Subject(SubjectCode),
+   WMark float,
+   PMark float,
+   Mark float,
+   PRIMARY KEY (RollNo, SubjectCode)
+)
+INSERT INTO Mark(RollNo,SubjectCode,WMark,PMark,Mark) VALUES
+          ('A01','PHP',20.01,10.50,15.255),
+          ('A01','JS',20.01,10.50,15.255),
+		  ('A02','PHP',40.10,20.50,30.3),
+		  ('A03','RJ',50,60.50,55.25),
+		  ('A04','RB',60.40,80.10,70.25),
+		  ('A05','AI',40.78,50.11,45.445)
+
+GO
+
+SELECT * FROM Subject
+CREATE TABLE Subject (
+  SubjectCode varchar(10) primary key,
+  SubjectName varchar(40),
+  WTest bit,
+  PTest bit,
+  WTest_per int,
+  PTest_per int
+)
+INSERT INTO Subject(SubjectCode,SubjectName,WTest,PTest,WTest_per,PTest_per) VALUES
+            ('JS','JavaScript',1,1,1,1),
+			('PHP','Hypertext Preprocessor',1,1,1,1),
+			('RJ','ReactJS',1,1,1,1),
+			('RB','Ruby',1,1,1,1),
+			('AI','Artificial Intelligence',1,1,1,1)
+GO
+
+--Tạo một khung nhìn chứa danh sách các sinh viên đã có ít nhất 2 bài thi (2 môn học khác nhau).
+CREATE VIEW vw_Student_Up2 AS
+SELECT s.RollNo, s.FullName
+FROM Student s
+INNER JOIN Mark m1 ON s.RollNo = m1.RollNo
+INNER JOIN Mark m2 ON s.RollNo = m2.RollNo
+WHERE m1.SubjectCode <> m2.SubjectCode;
+GO
+
+--Tạo một khung nhìn chứa danh sách tất cả các sinh viên đã bị trượt ít nhất là một môn.
+CREATE VIEW vw_SinhVienTruot AS
+SELECT Student.*
+FROM Student
+JOIN Mark ON Student.RollNo = Mark.RollNo
+WHERE Mark.Mark < 50; 
+GO
+
+--Tạo một khung nhìn chứa danh sách các sinh viên đang học ở TimeSlot G.
+CREATE VIEW vw_Students_timeslotG AS
+SELECT s.* FROM Student as s
+JOIN Class as c ON c.ClassCode = s.ClassCode
+WHERE c.TimeSlot = 'G'
+GO
+
+--Tạo một khung nhìn chứa danh sách các giáo viên có ít nhất 1 học sinh thi trượt ở bất cứ môn nào.
+CREATE VIEW vw_TeacherName_HaveFailExam AS
+SELECT c.HeadTeacher FROM Class as c
+JOIN Student as s ON s.ClassCode = c.ClassCode
+JOIN Mark as m ON m.RollNo = s.RollNo
+WHERE m.Mark < 50;
+GO
+
+--Tạo một khung nhìn chứa danh sách các sinh viên thi trượt môn EPC của từng lớp. Khung nhìn
+--này phải chứa các cột: Tên sinh viên, Tên lớp, Tên Giáo viên, Điểm thi môn .
+CREATE VIEW vw_Student_PHPexamFail AS
+SELECT s.FullName,c.Room,c.HeadTeacher,m.Mark FROM Student as s
+JOIN Class as c ON c.ClassCode = s.ClassCode
+JOIN Mark as m ON m.RollNo = s.RollNo
+WHERE m.SubjectCode = 'PHP' AND m.Mark < 50;
