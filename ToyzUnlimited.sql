@@ -76,7 +76,7 @@ AS BEGIN
 GO
 EXEC sp_toyAllInOne
 
---Phan 3: Bai tap ve nha.
+--PHẦN 3: BÀI TẬP VỀ NHÀ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 --1. Ta đã có 3 thủ tục lưu trữ tên là HeavyToys,PriceIncrease, QtyOnHand. Viết các câu lệnh xem
 --Định Nghĩa của các thủ tục trên dùng 3 cách sau:
 exec sp_helptext 'HeavyToys'
