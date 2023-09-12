@@ -91,7 +91,7 @@ GO
 
 --Chỉnh sửa thủ tục PriceIncrease và QtyOnHand thêm câu lệnh cho phép hiển thị giá trị mới đã
 --được cập nhật của các trường (UnitPrice,QtyOnHand).
-ALTER PROCEDURE sp_PriceIncrease 
+CREATE PROCEDURE sp_PriceIncrease 
 AS BEGIN
     UPDATE toyHandle
     SET UnitPrice = UnitPrice + 10;
