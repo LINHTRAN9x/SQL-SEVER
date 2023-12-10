@@ -76,7 +76,7 @@ AS BEGIN
 GO
 EXEC sp_toyAllInOne
 
---PHẦN 3: BÀI TẬP VỀ NHÀ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--Phan 3: Bai tap ve nha.
 --1. Ta đã có 3 thủ tục lưu trữ tên là HeavyToys,PriceIncrease, QtyOnHand. Viết các câu lệnh xem
 --Định Nghĩa của các thủ tục trên dùng 3 cách sau:
 exec sp_helptext 'HeavyToys'
@@ -91,7 +91,7 @@ GO
 
 --Chỉnh sửa thủ tục PriceIncrease và QtyOnHand thêm câu lệnh cho phép hiển thị giá trị mới đã
 --được cập nhật của các trường (UnitPrice,QtyOnHand).
-CREATE PROCEDURE sp_PriceIncrease 
+ALTER PROCEDURE sp_PriceIncrease 
 AS BEGIN
     UPDATE toyHandle
     SET UnitPrice = UnitPrice + 10;

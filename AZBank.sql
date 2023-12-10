@@ -4,11 +4,11 @@ USE AZBank;
 SELECT * from Customer
 CREATE TABLE Customer (
     CustomerId int PRIMARY KEY NOT NULL,
-    Name NVARCHAR(50) ,
-    City NVARCHAR(50) ,
-    Country NVARCHAR(50) ,
-    Phone NVARCHAR(15),
-    Email NVARCHAR(50)
+    Name NVARCHAR(50) NULL,
+    City NVARCHAR(50) NULL,
+    Country NVARCHAR(50) NULL,
+    Phone NVARCHAR(15) null,
+    Email NVARCHAR(50) NULL
 )
 INSERT INTO Customer(CustomerId,Name,City,Country,Phone,Email) VALUES
          (10,N'Trần Văn Linh',N'Hà Nội',N'Việt Nam',N'0903387976',N'tranvanlinh@gmail.com'),
@@ -20,7 +20,7 @@ CREATE TABLE CustomerAccount (
     AccountNumber char(9) PRIMARY KEY NOT NULL,
     CustomerId int REFERENCES Customer(CustomerId) NOT NULL,
     Balance money NOT NULL,
-    MinAccount money
+    MinAccount money NULL
 )
 INSERT INTO CustomerAccount(AccountNumber,CustomerId,Balance) VALUES
        ('123456789',10,1000000),
@@ -30,10 +30,10 @@ GO
 
 CREATE TABLE CustomerTransaction (
     TransactionId int PRIMARY KEY NOT NULL,
-    AccountNumber char(9) REFERENCES CustomerAccount(AccountNumber),
-    TransactionDate smalldatetime,
-    Amount money,
-    DepositorWithdraw bit
+    AccountNumber char(9) REFERENCES CustomerAccount(AccountNumber) null,
+    TransactionDate smalldatetime NULL,
+    Amount money null,
+    DepositorWithdraw bit NULL
 )
 
 INSERT INTO CustomerTransaction(TransactionId,AccountNumber,TransactionDate,Amount) VALUES 

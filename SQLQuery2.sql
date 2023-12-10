@@ -5,10 +5,11 @@ SELECT CustomerID
 From dbo.Customers
 WHERE City = 'London'
 
-CREATE TYPE dbo.Testing
-FROM NVarchar(20) NULL;
+CREATE TYPE dbo.tesing
+FROM NVARCHAR(20) NULL;
+DROP TYPE dbo.tesing;
 
-SELECT * FROM dbo.Testing;
+SELECT * FROM dbo.tesing;
 
 DECLARE @Number int;
 SET @Number = 2+2* (4 + (5-3));
@@ -31,4 +32,3 @@ ORDER BY SalesPersonID, YEAR(OrderDate)
 SELECT a.ProductID,Name, ProductNumber,d.ModifiedDate FROM Production.Product AS a
 INNER JOIN Production.ProductDocument AS d ON
 a.ProductID = d.ProductID
-
